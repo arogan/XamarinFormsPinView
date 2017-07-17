@@ -58,6 +58,20 @@ namespace FormsPinView.PCL
             }
         }
 
+        private string _lastPin;
+        public string LastPin
+        {
+            get
+            {
+                return _lastPin;
+            }
+            set
+            {
+                _lastPin = value;
+                RaisePropertyChanged(nameof(LastPin));
+            }
+        }
+
         public Command<string> KeyPressCommand { get; private set; }
 
         public PinViewModel()
@@ -79,12 +93,14 @@ namespace FormsPinView.PCL
                     {
                         if (ValidatorFunc.Invoke(EnteredPin))
                         {
+                            LastPin = String.Concat(EnteredPin);
                             EnteredPin.Clear();
                             OnSuccess?.Invoke(this, EventArgs.Empty);
                             OnUpdateDisplayedText?.Invoke(this, EventArgs.Empty);
                         }
                         else
                         {
+                            LastPin = String.Concat(EnteredPin);
                             EnteredPin.Clear();
                             OnError?.Invoke(this, EventArgs.Empty);
                             OnUpdateDisplayedText?.Invoke(this, EventArgs.Empty);
